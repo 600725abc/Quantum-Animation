@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>量子科學基本概念精密動畫</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1, h2 { color: #2c3e50; }
+        .concept { margin-bottom: 40px; border: 1px solid #ddd; padding: 20px; border-radius: 5px; }
+        canvas { border: 1px solid #ddd; display: block; margin: 20px 0; }
+        button { background-color: #3498db; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; }
+        button:hover { background-color: #2980b9; }
+    </style>
+</head>
+<body>
+    <h1>量子科學基本概念精密動畫</h1>
+
+    <div class="concept">
+        <h2>1. 波粒二象性</h2>
+        <p>波粒二象性是量子世界最神奇的特性之一。它告訴我們，在微觀世界中，物質可以同時表現出波的特性和粒子的特性。想像一下，如果你既可以是一個人，又可以是一片海浪，這就是量子粒子的日常生活！在這個動畫中，您可以看到物質在"波"和"粒子"之間切換。當它表現為波時，您會看到波浪般的圖案；當它表現為粒子時，您會看到離散的點。這種奇妙的現象挑戰了我們對世界的日常理解，但它確實是自然界的基本特性之一。</p>
+        <canvas id="dualityCanvas" width="400" height="200"></canvas>
+        <button onclick="toggleDuality()">切換波粒狀態</button>
+    </div>
+
+    <div class="concept">
+        <h2>2. 測不準原理</h2>
+        <p>測不準原理聽起來很複雜，但其實很像是在玩捉迷藏。想像您在黑暗中試圖抓住一隻螢火蟲。當您確切知道螢火蟲在哪裡時(位置)，它可能正在快速飛走(動量不確定)。相反，當您看到它飛行的軌跡時(動量)，您可能不確定它的確切位置。在量子世界裡，我們永遠無法同時精確地知道一個粒子的位置和速度。這不是因為我們的儀器不夠好，而是宇宙的基本規則！在動畫中，當藍色區域(表示位置)變小時，紅色區域(表示動量)就會變大，反之亦然。</p>
+        <canvas id="uncertaintyCanvas" width="400" height="200"></canvas>
+        <button onclick="toggleUncertainty()">切換位置/動量精確度</button>
+    </div>
+
+    <div class="concept">
+        <h2>3. 量子疊加</h2>
+        <p>量子疊加就像是薛丁格的貓，又活又死。在我們觀察之前，量子粒子可以同時處於多個狀態。這就像是您同時在家裡和公園裡，直到有人來找您，您才"決定"在其中一個地方。在微觀世界裡，粒子真的可以這樣！在動畫中，藍色圓圈代表粒子可能的位置。當您點擊"測量"時，粒子才會"選擇"一個確定的位置。這個概念顛覆了我們對現實的理解，但它是量子計算等新技術的基礎。</p>
+        <canvas id="superpositionCanvas" width="400" height="200"></canvas>
+        <button onclick="measureSuperposition()">測量</button>
+    </div>
+
+    <div class="concept">
+        <h2>4. 量子糾纏</h2>
+        <p>量子糾纏就像是宇宙中最奇妙的魔術。想像兩個粒子像是一對心電感應的雙胞胎，不管相隔多遠，一個的狀態改變會立即影響另一個。這種現象如此奇特，連愛因斯坦都稱之為"幽靈般的遠距作用"。在動畫中，兩個圓圈代表糾纏的粒子。當您改變一個粒子的狀態(顏色)時，另一個會立即相應改變，無論距離多遠。這種現象可能是未來量子通信的基礎，讓我們能夠實現絕對安全的通信。</p>
+        <canvas id="entanglementCanvas" width="400" height="200"></canvas>
+        <button onclick="changeEntanglement()">改變粒子狀態</button>
+    </div>
+
+    <div class="concept">
+        <h2>5. 量子隧穿</h2>
+        <p>量子隧穿就像是您突然獲得了穿牆術！在我們的日常世界裡，如果您沒有足夠的能量翻過一堵牆，您就會被擋住。但在量子世界裡，粒子有時可以"穿過"它本不應該能穿過的障礙。這就像是足球突然出現在球門裡，而不是飛過球門線。在動畫中，藍色球代表量子粒子，灰色區域是能量壁壘。您會看到粒子有時會神奇地"穿過"壁壘。這種現象解釋了許多自然過程，比如某些放射性衰變，也是掃描隧道顯微鏡等技術的基礎。</p>
+        <canvas id="tunnelingCanvas" width="400" height="200"></canvas>
+        <button onclick="toggleTunneling()">開始/停止粒子運動</button>
+    </div>
+
+    <script>
+        // 波粒二象性
+        const dualityCanvas = document.getElementById('dualityCanvas');
+        const dualityCtx = dualityCanvas.getContext('2d');
+        let isWave = true;
+
+        function drawDuality() {
+            dualityCtx.clearRect(0, 0, 400, 200);
+            if (isWave) {
+                dualityCtx.beginPath();
+                for (let x = 0; x < 400; x++) {
+                    let y = 100 + Math.sin(x / 20) * 50;
+                    dualityCtx.lineTo(x, y);
+                }
+                dualityCtx.stroke();
+            } else {
+                for (let i = 0; i < 20; i++) {
+                    dualityCtx.beginPath();
+                    dualityCtx.arc(Math.random() * 400, Math.random() * 200, 3, 0, Math.PI * 2);
+                    dualityCtx.fill();
+                }
+            }
+        }
+
+        function toggleDuality() {
+            isWave = !isWave;
+            drawDuality();
+        }
+
+        // 測不準原理
+        const uncertaintyCanvas = document.getElementById('uncertaintyCanvas');
+        const uncertaintyCtx = uncertaintyCanvas.getContext('2d');
+        let uncertaintyRatio = 0.5;
+
+        function drawUncertainty() {
+            uncertaintyCtx.clearRect(0, 0, 400, 200);
+            uncertaintyCtx.fillStyle = 'rgba(0, 0, 255, 0.5)';
+            uncertaintyCtx.fillRect(0, 0, 400 * uncertaintyRatio, 200);
+            uncertaintyCtx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+            uncertaintyCtx.fillRect(400 * uncertaintyRatio, 0, 400 * (1 - uncertaintyRatio), 200);
+        }
+
+        function toggleUncertainty() {
+            uncertaintyRatio = Math.random();
+            drawUncertainty();
+        }
+
+        // 量子疊加
+        const superpositionCanvas = document.getElementById('superpositionCanvas');
+        const superpositionCtx = superpositionCanvas.getContext('2d');
+        let superpositionStates = [];
+
+        function drawSuperposition() {
+            superpositionCtx.clearRect(0, 0, 400, 200);
+            superpositionCtx.fillStyle = 'rgba(0, 0, 255, 0.5)';
+            for (let state of superpositionStates) {
+                superpositionCtx.beginPath();
+                superpositionCtx.arc(state.x, state.y, 20, 0, Math.PI * 2);
+                superpositionCtx.fill();
+            }
+        }
+
+        function measureSuperposition() {
+            superpositionStates = [];
+            for (let i = 0; i < 5; i++) {
+                superpositionStates.push({x: Math.random() * 400, y: Math.random() * 200});
+            }
+            drawSuperposition();
+        }
+
+        // 量子糾纏
+        const entanglementCanvas = document.getElementById('entanglementCanvas');
+        const entanglementCtx = entanglementCanvas.getContext('2d');
+        let entangledColor = 'blue';
+
+        function drawEntanglement() {
+            entanglementCtx.clearRect(0, 0, 400, 200);
+            entanglementCtx.fillStyle = entangledColor;
+            entanglementCtx.beginPath();
+            entanglementCtx.arc(100, 100, 30, 0, Math.PI * 2);
+            entanglementCtx.arc(300, 100, 30, 0, Math.PI * 2);
+            entanglementCtx.fill();
+        }
+
+        function changeEntanglement() {
+            entangledColor = entangledColor === 'blue' ? 'red' : 'blue';
+            drawEntanglement();
+        }
+
+        // 量子隧穿
+        const tunnelingCanvas = document.getElementById('tunnelingCanvas');
+        const tunnelingCtx = tunnelingCanvas.getContext('2d');
+        let particleX = 50;
+        let particleY = 100;
+        let particleVx = 2;
+        let isTunneling = false;
+
+        function drawTunneling() {
+            tunnelingCtx.clearRect(0, 0, 400, 200);
+            // 畫障礙
+            tunnelingCtx.fillStyle = 'gray';
+            tunnelingCtx.fillRect(180, 50, 40, 100);
+            // 畫粒子
+            tunnelingCtx.fillStyle = 'blue';
+            tunnelingCtx.beginPath();
+            tunnelingCtx.arc(particleX, particleY, 10, 0, Math.PI * 2);
+            tunnelingCtx.fill();
+        }
+
+        function updateTunneling() {
+            if (isTunneling) {
+                particleX += particleVx;
+                if (particleX > 180 && particleX < 220) {
+                    if (Math.random() < 0.1) {  // 10% 機率隧穿
+                        particleX = 220;
+                    } else {
+                        particleVx = -particleVx;
+                    }
+                }
+                if (particleX <= 0 || particleX >= 400) {
+                    particleVx = -particleVx;
+                }
+                drawTunneling();
+                requestAnimationFrame(updateTunneling);
+            }
+        }
+
+        function toggleTunneling() {
+            isTunneling = !isTunneling;
+            if (isTunneling) {
+                updateTunneling();
+            }
+        }
+
+        // 初始化所有動畫
+        drawDuality();
+        drawUncertainty();
+        measureSuperposition();
+        drawEntanglement();
+        drawTunneling();
+    </script>
+</body>
+</html>

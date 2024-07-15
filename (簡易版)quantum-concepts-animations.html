@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>量子科學基本概念動畫</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; color: #2c3e50; }
+        .concept { margin-bottom: 40px; border: 1px solid #ddd; padding: 20px; border-radius: 8px; }
+        h2 { color: #2980b9; }
+        canvas { display: block; margin: 20px auto; border: 1px solid #ddd; }
+        p { text-align: justify; }
+    </style>
+</head>
+<body>
+    <h1>量子科學基本概念動畫</h1>
+
+    <div class="concept">
+        <h2>1. 測不準原理</h2>
+        <canvas id="uncertaintyCanvas" width="400" height="200"></canvas>
+        <p>測不準原理表明，我們無法同時精確測量粒子的位置和動量。當我們更精確地測量位置時，動量的測量就變得更不確定，反之亦然。在動畫中，當粒子的位置（藍點）變得更精確時，其動量（紅線）就變得更不確定，表現為更寬的範圍。</p>
+    </div>
+
+    <div class="concept">
+        <h2>2. 量子疊加</h2>
+        <canvas id="superpositionCanvas" width="400" height="200"></canvas>
+        <p>量子疊加原理指出，量子系統可以同時處於多個狀態的疊加中。只有在測量時，系統才會"坍縮"到某一個確定的狀態。在動畫中，粒子同時存在於兩個位置，直到"測量"（點擊）發生，才會隨機出現在其中一個位置。</p>
+    </div>
+
+    <div class="concept">
+        <h2>3. 量子糾纏</h2>
+        <canvas id="entanglementCanvas" width="400" height="200"></canvas>
+        <p>量子糾纏是指兩個或多個粒子的量子狀態相互關聯，即使它們相距很遠。測量其中一個粒子會立即影響另一個粒子的狀態。在動畫中，兩個粒子的顏色總是相反的，無論它們相距多遠。</p>
+    </div>
+
+    <div class="concept">
+        <h2>4. 量子隧穿</h2>
+        <canvas id="tunnelingCanvas" width="400" height="200"></canvas>
+        <p>量子隧穿是指粒子可以穿過在經典物理學中不可能穿過的能量勢壘。這是由於粒子的波動性質。在動畫中，藍色粒子有時會"穿過"灰色勢壘，這在經典物理中是不可能的。</p>
+    </div>
+
+    <script>
+        // 測不準原理
+        const uncertaintyCanvas = document.getElementById('uncertaintyCanvas');
+        const uctx = uncertaintyCanvas.getContext('2d');
+        let particleX = 200;
+        let uncertaintyWidth = 100;
+
+        function drawUncertainty() {
+            uctx.clearRect(0, 0, 400, 200);
+            uctx.fillStyle = 'blue';
+            uctx.beginPath();
+            uctx.arc(particleX, 100, 5, 0, Math.PI * 2);
+            uctx.fill();
+            uctx.strokeStyle = 'red';
+            uctx.lineWidth = 2;
+            uctx.beginPath();
+            uctx.moveTo(particleX - uncertaintyWidth / 2, 150);
+            uctx.lineTo(particleX + uncertaintyWidth / 2, 150);
+            uctx.stroke();
+        }
+
+        setInterval(() => {
+            particleX = 100 + Math.random() * 200;
+            uncertaintyWidth = 200 - Math.abs(particleX - 200);
+            drawUncertainty();
+        }, 1000);
+
+        // 量子疊加
+        const superpositionCanvas = document.getElementById('superpositionCanvas');
+        const sctx = superpositionCanvas.getContext('2d');
+        let superpositionState = 'both';
+
+        function drawSuperposition() {
+            sctx.clearRect(0, 0, 400, 200);
+            if (superpositionState === 'both') {
+                sctx.fillStyle = 'rgba(0, 0, 255, 0.5)';
+                sctx.beginPath();
+                sctx.arc(100, 100, 20, 0, Math.PI * 2);
+                sctx.arc(300, 100, 20, 0, Math.PI * 2);
+                sctx.fill();
+            } else {
+                sctx.fillStyle = 'blue';
+                sctx.beginPath();
+                sctx.arc(superpositionState === 'left' ? 100 : 300, 100, 20, 0, Math.PI * 2);
+                sctx.fill();
+            }
+        }
+
+        superpositionCanvas.addEventListener('click', () => {
+            superpositionState = Math.random() < 0.5 ? 'left' : 'right';
+            drawSuperposition();
+            setTimeout(() => {
+                superpositionState = 'both';
+                drawSuperposition();
+            }, 1000);
+        });
+
+        drawSuperposition();
+
+        // 量子糾纏
+        const entanglementCanvas = document.getElementById('entanglementCanvas');
+        const ectx = entanglementCanvas.getContext('2d');
+        let entangledState = 'red-blue';
+
+        function drawEntanglement() {
+            ectx.clearRect(0, 0, 400, 200);
+            ectx.fillStyle = entangledState === 'red-blue' ? 'red' : 'blue';
+            ectx.beginPath();
+            ectx.arc(100, 100, 20, 0, Math.PI * 2);
+            ectx.fill();
+            ectx.fillStyle = entangledState === 'red-blue' ? 'blue' : 'red';
+            ectx.beginPath();
+            ectx.arc(300, 100, 20, 0, Math.PI * 2);
+            ectx.fill();
+        }
+
+        setInterval(() => {
+            entangledState = entangledState === 'red-blue' ? 'blue-red' : 'red-blue';
+            drawEntanglement();
+        }, 1000);
+
+        // 量子隧穿
+        const tunnelingCanvas = document.getElementById('tunnelingCanvas');
+        const tctx = tunnelingCanvas.getContext('2d');
+        let particlePosition = 50;
+        let particleDirection = 1;
+
+        function drawTunneling() {
+            tctx.clearRect(0, 0, 400, 200);
+            // 繪製勢壘
+            tctx.fillStyle = 'gray';
+            tctx.fillRect(180, 50, 40, 100);
+            // 繪製粒子
+            tctx.fillStyle = 'blue';
+            tctx.beginPath();
+            tctx.arc(particlePosition, 100, 10, 0, Math.PI * 2);
+            tctx.fill();
+        }
+
+        setInterval(() => {
+            particlePosition += particleDirection * 5;
+            if (particlePosition > 350 || particlePosition < 50) {
+                particleDirection *= -1;
+            }
+            // 模擬隧穿
+            if (particlePosition === 175 && Math.random() < 0.3) {
+                particlePosition = 225;
+            }
+            drawTunneling();
+        }, 100);
+
+        // 初始化所有動畫
+        drawUncertainty();
+        drawSuperposition();
+        drawEntanglement();
+        drawTunneling();
+    </script>
+</body>
+</html>
